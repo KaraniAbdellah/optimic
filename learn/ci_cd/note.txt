@@ -6,7 +6,6 @@
 */
 
 
-
 // Deployment Into Cloud Run Without CI/CD
 /*
     Change main.py
@@ -24,9 +23,18 @@
     - gcloud run deploy optimic-backend --image europe-central2-docker.pkg.dev/PROJECT_ID/REPOSITORY/APP --region europe-central2
 */
 
-
-
 // Automate Deployment Into Cloud Run With CI/CD
 /*
     SRC: https://www.youtube.com/watch?v=7hJlhcYDR68
+    - We need to build .yaml file:
+    - Each file has jobs part:
+        --> Authentification Job:
+            * Where we authenticate with Google Cloud From github actions via OpenID Connect (OIDC).
+            * We need to create Workload Identity Pool
+            * We put it into github screts
+        --> Build Job:
+            * Where we build Docker image
+        --> Deployment Job:
+            * Where we deploy Docker image to Artifact Registry and Then to Cloud Run
+        NOTE: We Take Template from Github Actions and We Update it to our needs
 */
