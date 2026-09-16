@@ -41,8 +41,8 @@ on:
 env:
   PROJECT_ID: 'optimic' # TODO: update to your Google Cloud project ID
   REGION: 'europe-central2' # TODO: update to your region
-  SERVICE: 'my-service-account' # TODO: update to your service name\
-  IMAGE_NAME: 'solar'
+  SERVICE: 'my-service-account' # TODO: update to your service name
+  IMAGE_NAME: 'optimic-backend'
   WORKLOAD_IDENTITY_PROVIDER: '${{secrets.WORKLOAD_IDENTITY_PROVIDER}}' # TODO: update to your workload identity provider
 
 # We Start Define Workflow
