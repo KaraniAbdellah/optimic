@@ -15,6 +15,7 @@ env:
 
   # Cloud Run service name
   SERVICE: 'optimic-backend'
+  SERVICE_ACCOUNT_EMAIL: '${{secrets.SERVICE_ACCOUNT_EMAIL}}'
 
   # Artifact Registry repository
   REPOSITORY: 'cloud-run-source-deploy'
@@ -44,6 +45,7 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v3'
         with:
+          service_account: ${{env.SERVICE_ACCOUNT_EMAIL}}
           project_id: '${{ env.PROJECT_ID }}'
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
 
@@ -59,7 +61,7 @@ jobs:
       - name: 'Build and Push Container'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-
+          gcloud auth configure-docker ${{env.REGION}}-docker.pkg.dev
           docker build \
             --tag "${DOCKER_TAG}" \
             ./optimic/backend
