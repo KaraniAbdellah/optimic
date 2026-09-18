@@ -108,7 +108,7 @@ def initialize_chatbot(user_uid: str):
     """Ensure collection, indices, and user shard exist."""
     collections = client_qdrant.get_collections().collections
     collection_exists = any(c.name == COLLECTION_NAME for c in collections)
-
+    print(f"Collection exists: {collection_exists}")
     if not collection_exists:
         client_qdrant.create_collection(
             collection_name=COLLECTION_NAME,
@@ -152,7 +152,6 @@ def add_doc_qdrant_cloud(rows: list, headers: list, payload: dict, user_uid: str
         doc = ""
         for header, value in zip(headers, row):
             doc += f"{header}: {value}\n"
-        print(doc)
         payload["text"] = doc
         points = [
             models.PointStruct(

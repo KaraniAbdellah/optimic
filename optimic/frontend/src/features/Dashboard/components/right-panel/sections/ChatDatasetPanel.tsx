@@ -80,7 +80,7 @@ export default function ChatDatasetPanel() {
         throw new Error("User UID not found. Cannot start chat.");
       }
 
-      await startChatWithDataset(
+      const data = await startChatWithDataset(
         activeDataset.rows ?? [],
         activeDataset.headers ?? [],
         activeDataset.id,
@@ -89,8 +89,12 @@ export default function ChatDatasetPanel() {
         userUid,
       );
 
-      datasetCtx?.setActiveDataset({ ...activeDataset, isActive: true });
-      await makeDatasetActive(activeDataset.id);
+      if (data) {
+        datasetCtx?.setActiveDataset({ ...activeDataset, isActive: true });
+        await makeDatasetActive(activeDataset.id);
+      } else {
+        setMessages([]);
+      }
     } catch (error) {
       console.error("Failed to start chat with dataset:", error);
       alert("Something went wrong while connecting to the dataset.");

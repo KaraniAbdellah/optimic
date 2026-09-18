@@ -22,7 +22,7 @@ from reports import generate_dataset_report
 from anaylse import run_dataset_analysis
 from models import ChatData, MarketingData, UploadData, UserData, AnalyseData, ReportData
 from state import DeleteDatasetData
-
+from auth import delete_user_from_auth_db
 
 app = FastAPI()
 
@@ -47,7 +47,7 @@ graph = compile_state_graph()
 
 @app.middleware("http")
 async def authentication_middleware(request: Request, call_next):
-    public_paths = {"/", "/authenticate", "/logout", "/docs", "/openapi.json"}
+    public_paths = {"/", "/authenticate", "/docs", "/openapi.json"}
 
     if request.url.path in public_paths or request.method == "OPTIONS":
         return await call_next(request)
@@ -208,12 +208,19 @@ async def delete_dataset(data: DeleteDatasetData, request: Request):
     return {"message": "Dataset deleted successfully"}
 
 
+
+
 @app.post("/logout")
-def logout_user(response: Response):
+def logout_user(response: Response, request: Request):
+    user = request.state.user
+    user_uid = user["uid"]
+
     is_secure = os.getenv("MODE_TYPE") == "production"
     response.set_cookie(
         "auth_token", "", max_age=0, httponly=True, secure=False, samesite="lax"
     )
+    # delete user from auth.db
+    delete_user_from_auth_db(user_uid=user_uid)
     response.delete_cookie(
         key="auth_token",
         httponly=True,
@@ -221,6 +228,8 @@ def logout_user(response: Response):
         samesite="None",
     )
     return {"message": "Logged out successfully"}
+
+
 
 
 

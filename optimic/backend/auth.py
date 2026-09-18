@@ -98,3 +98,8 @@ def verify_token(token: str) -> dict:
 def delete_user(uid: str):
     with sqlite3.connect(AUTH_DB) as conn:
         conn.execute("DELETE FROM users WHERE uid = ?", (uid,))
+
+
+def delete_user_from_auth_db(user_uid: str):
+    with sqlite3.connect(AUTH_DB) as conn:
+        conn.execute("DELETE FROM users WHERE uid = ?", (user_uid,))

@@ -34,7 +34,11 @@ async function startChatWithDataset(
     }
 
     const data = await response.json();
-    console.log("Chat started successfully:", data);
+    if (data) {
+      return data;
+    } else {
+      return null;
+    }
   } catch (error) {
     console.error("Error starting chat with the dataset:", error);
   }
