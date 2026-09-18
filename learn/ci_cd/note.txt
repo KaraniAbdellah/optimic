@@ -37,4 +37,8 @@
         --> Deployment Job:
             * Where we deploy Docker image to Artifact Registry and Then to Cloud Run
         NOTE: We Take Template from Github Actions and We Update it to our needs
+
+    - File:
+        --> uses: 'google-github-actions/deploy-cloudrun@v3'
+            - this an action (reusable code) - it contains the logic to deploy to Cloud Run [gcloud run deploy ...]
 */

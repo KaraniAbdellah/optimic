@@ -1,10 +1,9 @@
 FROM python:3.12-slim
 
-WORKDIR /app/
+WORKDIR /app
 
-COPY * /app/
+COPY requirements.txt .
 
-# --no-cache-dir: do not use cache on this layer, this will reduce the size of the image
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .

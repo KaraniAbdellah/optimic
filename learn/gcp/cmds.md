@@ -8,5 +8,4 @@
   - REPOSITORY = your are Artifact REPOSITORY name = cloud-run-source-deploy
   - APP = Image = optimic-backend
 - gcloud run deploy optimic-backend --image europe-central2-docker.pkg.dev/PROJECT_ID/REPOSITORY/APP --region europe-central2
-
-
+- Push Docker image to Artifact Registry: docker push Region/project_name/repository_name/image_name:tag
