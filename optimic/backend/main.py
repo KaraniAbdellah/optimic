@@ -146,16 +146,17 @@ async def upload_dataset(dataUploaded: UploadData, request: Request):
         rows = dataUploaded.rows
         headers = dataUploaded.headers
 
-        # 1. Check if it already exists completely
+        # Check if it already exists completely
         if check_dataset_exists(user_uid, dataset_name):
             return True
+        
+        # Create Collection in Qdrant if it doesn't exist
+        initialize_chatbot(user_uid)
 
-        # 2. STEP 1: Process and store in Qdrant FIRST
-        # If this fails, it jumps straight to 'except' and SQLite stays clean
+        # Add the dataset to Qdrant
         process_data_into_qdrant(rows, headers, dataset_id, user_uid)
 
-        # 3. STEP 2: Only save to SQLite AFTER Qdrant succeeds
-        initialize_chatbot(user_uid)
+        # Add the dataset record to the local SQLite registry
         add_user_dataset_record(user_uid, dataset_name, dataset_id)
 
         return True

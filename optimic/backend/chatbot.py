@@ -22,6 +22,12 @@ config = dotenv_values(".env")
 QDRANT_CLOUD_API_KEY = config.get("QDRANT_CLOUD_API_KEY")
 QDRANT_CLOUD_ENDPOINT = config.get("QDRANT_CLOUD_ENDPOINT")
 GROQ_API_KEY = config.get("GROQ_API_KEY")
+# QDRANT_CLOUD_API_KEY = os.getenv("QDRANT_CLOUD_API_KEY")
+# QDRANT_CLOUD_ENDPOINT = os.getenv("QDRANT_CLOUD_ENDPOINT")
+# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+import os
+
 
 CHATS_DB = "chats.db"
 COLLECTION_NAME = "optimic_collection"
