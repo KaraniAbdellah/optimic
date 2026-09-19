@@ -11,6 +11,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "your-super-secret-key-12345")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 TOKEN_EXPIRE_DAYS = int(os.getenv("TOKEN_EXPIRE_DAYS", 7))
 AUTH_DB = "auth.db"
+CHATS_DB = "chats.db"
 
 
 # def init_auth_db():
@@ -103,3 +104,12 @@ def delete_user(uid: str):
 def delete_user_from_auth_db(user_uid: str):
     with sqlite3.connect(AUTH_DB) as conn:
         conn.execute("DELETE FROM users WHERE uid = ?", (user_uid,))
+
+
+def get_user_datasets(user_uid: str):
+    with sqlite3.connect(CHATS_DB) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT dataset_id FROM datasets WHERE user_uid = ?", (user_uid,)
+        ).fetchall()
+        return [row["dataset_id"] for row in rows]

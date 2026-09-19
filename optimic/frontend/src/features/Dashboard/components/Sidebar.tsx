@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import SidebarBrand from "./sidebar/SidebarBrand";
 import SidebarNav from "./sidebar/SidebarNav";
 import DatasetsPanel from "./sidebar/DatasetsPanel";
 import { LogOut, AlertTriangle } from "lucide-react";
 import logout from "../services/logout";
+import { clearAllDatasetsFromIndexDb } from "../services/datasetDb";
+import UserDataContext from "@/global/context/UserDataContext";
 
 interface SidebarProps {
   activeId: string;
@@ -14,12 +16,29 @@ export default function Sidebar({ activeId, onSelect }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const userContext = useContext(UserDataContext);
 
   const handleConfirmLogout = async () => {
     setIsLoggingOut(true);
-    await logout();
-  };
 
+    try {
+      const uid = userContext?.user_data?.uid;
+      if (uid) {
+        await clearAllDatasetsFromIndexDb(uid);
+      }
+    } catch (err) {
+      console.error("Failed to clear IndexedDB:", err);
+    }
+
+    const success = await logout();
+
+    if (success) {
+      window.location.href = "/auth";
+    } else {
+      setIsLoggingOut(false);
+      alert("Logout failed. Please try again.");
+    }
+  };
   return (
     <>
       <aside
@@ -78,7 +97,8 @@ export default function Sidebar({ activeId, onSelect }: SidebarProps) {
 
             {/* Description */}
             <p className="text-sm text-slate-600 mb-6">
-              You will be redirected to the sign-in page and will need to log back in to access your workspaces.
+              You will be redirected to the sign-in page and will need to log
+              back in to access your workspaces.
             </p>
 
             {/* Modal Actions */}

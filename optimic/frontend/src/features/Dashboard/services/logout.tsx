@@ -1,26 +1,19 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-export default async function logout(): Promise<void> {
+export default async function logout(): Promise<boolean> {
   try {
     const response = await fetch(`${API_URL}/logout`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // Required to communicate cookie deletion
+      credentials: "include", // Sends & clears cookies
     });
 
-    if (!response.ok) {
-      throw new Error("Logout request failed on backend");
-    }
+    return response.ok;
   } catch (error) {
-    console.error("Error during logout:", error);
+    console.error("Logout error:", error);
+    return false;
   } finally {
-    // Clear any local cache/storage
     localStorage.clear();
     sessionStorage.clear();
-
-    // Redirect to login page
-    window.location.href = "/";
   }
 }
+

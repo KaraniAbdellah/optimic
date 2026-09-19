@@ -114,3 +114,24 @@ export async function removeDataset(
     tx.onerror = () => reject(tx.error);
   });
 }
+export async function clearAllDatasetsFromIndexDb(user_uid: string): Promise<void> {
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_CONFIG.STORE, "readwrite");
+    const store = tx.objectStore(DB_CONFIG.STORE);
+    const getAllReq = store.getAll();
+
+    getAllReq.onsuccess = () => {
+      const datasets = getAllReq.result || [];
+      for (const dataset of datasets) {
+        if (dataset.user_uid === user_uid) {
+          store.delete(dataset.id);
+        }
+      }
+    };
+
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}

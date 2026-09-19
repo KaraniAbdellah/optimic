@@ -22,7 +22,8 @@ from reports import generate_dataset_report
 from anaylse import run_dataset_analysis
 from models import ChatData, MarketingData, UploadData, UserData, AnalyseData, ReportData
 from state import DeleteDatasetData
-from auth import delete_user_from_auth_db
+from auth import delete_user_from_auth_db, get_user_datasets
+
 
 app = FastAPI()
 
@@ -182,6 +183,8 @@ async def ask_question(data: ChatData, request: Request):
         "response": answer,
     }
 
+
+
 @app.delete("/clear-chat-history")
 async def clear_chat_history_endpoint(request: Request):
     user = request.state.user
@@ -212,24 +215,45 @@ async def delete_dataset(data: DeleteDatasetData, request: Request):
 
 @app.post("/logout")
 def logout_user(response: Response, request: Request):
-    user = request.state.user
-    user_uid = user["uid"]
+    try:
+        user = request.state.user
+        user_uid = user["uid"]
 
+        # Get all dataset IDs
+        datasets = get_user_datasets(user_uid=user_uid)
+
+        for dataset_id in datasets:
+            # Level 1: Delete from Qdrant Cloud
+            try:
+                delete_dataset_from_qdrant(dataset_id=dataset_id, user_uid=user_uid)
+            except Exception as e:
+                print(f"Qdrant delete error: {e}")
+
+            # Level 2: Delete from SQLite registry
+            try:
+                delete_dataset_from_registry(
+                    user_uid=user_uid, dataset_id=dataset_id
+                )
+            except Exception as e:
+                print(f"Registry delete error: {e}")
+
+        # Delete user from auth.db
+        delete_user_from_auth_db(user_uid=user_uid)
+
+    except Exception as e:
+        print(f"Error during logout: {e}")
+        return false
+
+    # Clear cookie
     is_secure = os.getenv("MODE_TYPE") == "production"
-    response.set_cookie(
-        "auth_token", "", max_age=0, httponly=True, secure=False, samesite="lax"
-    )
-    # delete user from auth.db
-    delete_user_from_auth_db(user_uid=user_uid)
     response.delete_cookie(
         key="auth_token",
         httponly=True,
-        secure=True,
-        samesite="None",
+        secure=is_secure,
+        samesite="lax",
     )
-    return {"message": "Logged out successfully"}
 
-
+    return True
 
 
 
