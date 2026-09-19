@@ -1,7 +1,6 @@
 import sqlite3
 import uuid
 
-from dotenv import dotenv_values
 from groq import Groq
 from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
@@ -14,17 +13,15 @@ from state import fast_llm
 from langchain_core.messages import RemoveMessage
 from langgraph.graph.message import REMOVE_ALL_MESSAGES
 from state import CHATBOT_PROMPT
-
+from dotenv import load_dotenv
+import os
 
 
 # Load environment variables
-config = dotenv_values(".env")
-QDRANT_CLOUD_API_KEY = config.get("QDRANT_CLOUD_API_KEY")
-QDRANT_CLOUD_ENDPOINT = config.get("QDRANT_CLOUD_ENDPOINT")
-GROQ_API_KEY = config.get("GROQ_API_KEY")
-# QDRANT_CLOUD_API_KEY = os.getenv("QDRANT_CLOUD_API_KEY")
-# QDRANT_CLOUD_ENDPOINT = os.getenv("QDRANT_CLOUD_ENDPOINT")
-# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+load_dotenv(".env")
+QDRANT_CLOUD_API_KEY = os.getenv("QDRANT_CLOUD_API_KEY")
+QDRANT_CLOUD_ENDPOINT = os.getenv("QDRANT_CLOUD_ENDPOINT")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 import os
 

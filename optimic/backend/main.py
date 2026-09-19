@@ -149,7 +149,7 @@ async def upload_dataset(dataUploaded: UploadData, request: Request):
         # Check if it already exists completely
         if check_dataset_exists(user_uid, dataset_name):
             return True
-        
+
         # Create Collection in Qdrant if it doesn't exist
         initialize_chatbot(user_uid)
 
