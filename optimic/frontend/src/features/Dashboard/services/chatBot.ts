@@ -1,8 +1,8 @@
 import { DatasetType } from "@/global/types/DatasetType";
 import { DB_CONFIG } from "../constants/conts";
 import { openDatabase } from "./datasetDb";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"; // Replace with your backend API base URL
 async function startChatWithDataset(
   rows: string[][],
   headers: string[],
@@ -10,37 +10,29 @@ async function startChatWithDataset(
   name: string,
   isActive: boolean,
   user_uid: string,
-) {
+): Promise<boolean> {
   try {
-    console.log("Sending data to backend:", { rows, headers, id, name, user_uid });
     const response = await fetch(`${API_BASE_URL}/upload-dataset`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // Required to send auth_token cookie
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
-        rows: rows,
-        headers: headers,
+        rows,
+        headers,
         dataset_id: id,
         dataset_name: name,
-        isActive: isActive,
-        user_uid: user_uid,
+        isActive,
+        user_uid,
       }),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to start chat with the dataset");
-    }
+    if (!response.ok) return false;
 
-    const data = await response.json();
-    if (data) {
-      return data;
-    } else {
-      return null;
-    }
+    const result = await response.json();
+    return result === true;
   } catch (error) {
-    console.error("Error starting chat with the dataset:", error);
+    console.error("Error starting chat with dataset:", error);
+    return false;
   }
 }
 

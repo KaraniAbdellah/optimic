@@ -138,39 +138,27 @@ async def generate_offre(data: MarketingData, request: Request):
 @app.post("/upload-dataset")
 async def upload_dataset(dataUploaded: UploadData, request: Request):
     try:
-        user_uid = request.state.user.get("uid") or request.state.user.get("sub")
+        user = getattr(request.state, "user", {}) or {}
+        user_uid = user.get("uid") or user.get("sub") or dataUploaded.user_uid
         dataset_id = dataUploaded.dataset_id
         dataset_name = dataUploaded.dataset_name
         rows = dataUploaded.rows
         headers = dataUploaded.headers
 
-        user_exit = get_user_dataset_record(user_uid, dataset_id)
+        # If already exists, consider it done
+        if check_dataset_exists(user_uid, dataset_name):
+            return True
 
-        if user_exit:
-            dataset_exit = check_dataset_exists(user_uid, dataset_name)
-            if dataset_exit:
-                return {
-                    "status": "Dataset already exists for this user",
-                    "dataset_id": dataset_id,
-                }
-        else:
-            add_user_dataset_record(user_uid, dataset_name, dataset_id)
-            initialize_chatbot(user_uid)
-
-        # Ensure dataset metadata is tracked in SQLite
+        # Save to SQLite and Qdrant
         add_user_dataset_record(user_uid, dataset_name, dataset_id)
-
+        initialize_chatbot(user_uid)
         process_data_into_qdrant(rows, headers, dataset_id, user_uid)
 
-        return {
-            "status": "Dataset saved in vector database",
-            "dataset_id": dataset_id,
-        }
+        return True
 
     except Exception as e:
         print("Upload dataset failed:", e)
-        raise HTTPException(status_code=500, detail="Request failed")
-
+        return False
 
 @app.post("/ask-question")
 async def ask_question(data: ChatData, request: Request):

@@ -73,14 +73,16 @@ export default function ChatDatasetPanel() {
       return;
     }
 
-    setIsUploading(true);
-    try {
-      const userUid = user?.user_data?.uid || "";
-      if (!userUid) {
-        throw new Error("User UID not found. Cannot start chat.");
-      }
+    const userUid = user?.user_data?.uid || "";
+    if (!userUid) {
+      alert("User UID not found. Cannot start chat.");
+      return;
+    }
 
-      const data = await startChatWithDataset(
+    setIsUploading(true);
+
+    try {
+      const success = await startChatWithDataset(
         activeDataset.rows ?? [],
         activeDataset.headers ?? [],
         activeDataset.id,
@@ -89,11 +91,11 @@ export default function ChatDatasetPanel() {
         userUid,
       );
 
-      if (data) {
+      if (success) {
         datasetCtx?.setActiveDataset({ ...activeDataset, isActive: true });
         await makeDatasetActive(activeDataset.id);
       } else {
-        setMessages([]);
+        alert("Failed to upload dataset. Please try again.");
       }
     } catch (error) {
       console.error("Failed to start chat with dataset:", error);
