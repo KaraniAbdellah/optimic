@@ -1,11 +1,11 @@
 # Optimic HERE
 
-<img scr="./images/logo.png" />
+<img scr="./images/logo.png" alt="Optimic">>
 
 **Optimic** is an AI-powered platform that automatically creates, tests, and improves personalized marketing offers for your customers.
 
 
-<video scr="./images/video.mp4" />
+<!-- <video scr="./images/video.mp4" /> -->
 
 ### What is Optimic?
 Writing custom discount offers by hand takes a lot of time, and it is easy to make mistakes (like giving discounts that are too big). **Optimic** solves this by using a team of AI agents that work together under a central supervisor to read your data, check business rules, and write high-converting copy in seconds **(~2.3s)**.
@@ -54,25 +54,38 @@ Generate complete executive reports in one click. The reporting agent reads your
 git clone https://github.com/KaraniAbdellah/optimic.git
 cd optimic
 
-# 2. Install frontend dependencies
+# 2. Frontend SetUp
 npm install
-
-# 3. Set up environment variables
 cp .env.example .env
-
-# 4. Start the application
 npm run dev
+
+# 3. Backend SetUp
+curl -LsSf https://astral.sh/uv/install.sh | sh
+cd backend
+uv venv
+source .venv/bin/activate
+uv pip install requirements.txt
+cp .env.example .env
+uv run uvicorn main:app --reload --port 8000
 ```
 
 
-#### Technical Staf
+#### Technical Stack
+**Architecture:** Multi-agent supervisor pattern with centralized orchestration, including Data Fetcher, Scoring Agent, Generation Agent, Validation Agent, and Optimization Agent.
 
+**Frontend:** React, Tailwind CSS
+
+**Backend:** FastAPI
+
+**Database:** Qdrant, DuckDB
+
+**DevOps & Cloud:** Docker, GitHub Actions, CI/CD, Google Cloud Run
 #### Contribution
+Contributions are welcome:
 
 
 
 
 
 
-
-**Created by <a href="">@abdellah_karani</a>**
+**Created by <a href="https://www.linkedin.com/in/abdellah-karani-965928294/">@abdellah_karani</a>**
