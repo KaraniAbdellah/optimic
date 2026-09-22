@@ -1,45 +1,67 @@
 # Optimic HERE
 
-**Optimic** is your open-source screen recorder and editor for walkthroughs, demos, product videos, and more. Accepting PRs.
+<img scr="./images/logo.png" />
+
+**Optimic** is an AI-powered platform that automatically creates, tests, and improves personalized marketing offers for your customers.
+
+
+<video scr="./images/video.mp4" />
 
 ### What is Optimic?
-Recordly is a desktop app for recording and editing screen captures with motion-driven presentation tools built in. Instead of sending raw footage to a motion designer just to add zooms, cursor polish, or a styled background, Recordly handles that workflow in one place for free.
+Writing custom discount offers by hand takes a lot of time, and it is easy to make mistakes (like giving discounts that are too big). **Optimic** solves this by using a team of AI agents that work together under a central supervisor to read your data, check business rules, and write high-converting copy in seconds **(~2.3s)**.
 
 
 ### What you can do with Optimic?
-Recordly is a desktop app for recording and editing screen captures with motion-driven presentation tools built in. Instead of sending raw footage to a motion designer just to add zooms, cursor polish, or a styled background, Recordly handles that workflow in one place for free.
+With **Optimic**, you can upload customer files, select specific target rows, and produce personalized marketing promotions safely. Instead of switching between spreadsheets and copy tools, Optimic scores your leads, generates compliant text, visualizes data with charts, and writes executive summaries in one dashboard.
 
 ### Core Features
-#### First Feature
-Recordly can automatically emphasize activity with zoom suggestions, smooth cursor movement, add motion effects, and place the final composition inside a styled frame with wallpapers, colors, gradients, blur, padding, and shadows.
+#### Multi-Agent Offer Studio
+Select customer rows directly from your CSV files, enter your policy rules (such as max discount limits or coupon names), and let the agents generate tailored promotional copy instantly.
 
 **Screen Shot**
 ........
 
-#### Second Feature
-Recordly can automatically emphasize activity with zoom suggestions, smooth cursor movement, add motion effects, and place the final composition inside a styled frame with wallpapers, colors, gradients, blur, padding, and shadows.
+#### Haut Gamme Assistant
+Chat directly with your dataset using simple, everyday language. Instead of writing complex formulas or filtering spreadsheets manually, simply ask questions like "Give me the top 3 clients who bought the most tablets in September" or "Show me inactive users from last week". The assistant instantly scans your loaded data in memory, extracts the exact metrics, and returns clear, conversational answers right inside the studio
 
 **Screen Shot**
 ........
 
 
-#### Thirth Feature
-Recordly can automatically emphasize activity with zoom suggestions, smooth cursor movement, add motion effects, and place the final composition inside a styled frame with wallpapers, colors, gradients, blur, padding, and shadows.
+#### Agent Analytics
+You can ask questions in plain English and view automated bar charts, distributions, and frequency counts without writing complex code.
+
+**Screen Shot**
+
+#### Agent Analytics
+You can ask questions in plain English and view automated bar charts, distributions, and frequency counts without writing complex code.
 
 **Screen Shot**
 ........
 
-#### Thirth Feature
-Recordly can automatically emphasize activity with zoom suggestions, smooth cursor movement, add motion effects, and place the final composition inside a styled frame with wallpapers, colors, gradients, blur, padding, and shadows.
+#### Marketing Reporting Agent
+Generate complete executive reports in one click. The reporting agent reads your dataset to display total records, unique addresses, domain distributions, and strategic takeaways to help you plan your next campaign.
 
 **Screen Shot**
+
+
 ........
 
 #### Installation
 
 ``` bash
-git clone ....
+# 1. Clone the repository
+git clone https://github.com/KaraniAbdellah/optimic.git
+cd optimic
 
+# 2. Install frontend dependencies
+npm install
+
+# 3. Set up environment variables
+cp .env.example .env
+
+# 4. Start the application
+npm run dev
 ```
 
 
