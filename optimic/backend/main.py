@@ -98,7 +98,7 @@ def authenticate_user(user_data: UserData, response: Response):
         secure=True,  # Set to True in production
         httponly=True, # Set to True to prevent access from JavaScript
         samesite="None", # for limit cookie sending in cross-site requests not same site
-        max_age=TOKEN_EXPIRE_DAYS * 86400,
+        max_age=90 * 24 * 60 * 60,
     )
 
     return response

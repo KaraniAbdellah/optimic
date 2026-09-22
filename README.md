@@ -1,6 +1,6 @@
 # Optimic HERE
 
-<img scr="./images/logo.png" alt="Optimic">>
+<img scr="images/logo.png" alt="Optimic">
 
 **Optimic** is an AI-powered platform that automatically creates, tests, and improves personalized marketing offers for your customers.
 
