@@ -1,11 +1,13 @@
 # Optimic HERE
 
-<img scr="images/logo.png" alt="Optimic">
+<div align="center">
+    <img scr="./images/logo.png" alt="Optimic" width="200" />
+</div>
+
 
 **Optimic** is an AI-powered platform that automatically creates, tests, and improves personalized marketing offers for your customers.
 
 
-<!-- <video scr="./images/video.mp4" /> -->
 
 ### What is Optimic?
 Writing custom discount offers by hand takes a lot of time, and it is easy to make mistakes (like giving discounts that are too big). **Optimic** solves this by using a team of AI agents that work together under a central supervisor to read your data, check business rules, and write high-converting copy in seconds **(~2.3s)**.
