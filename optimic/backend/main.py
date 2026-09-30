@@ -28,8 +28,6 @@ from auth import delete_user_from_auth_db, get_user_datasets
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
     "https://optimic.vercel.app",
     "http://optimic.vercel.app"
 ]
